@@ -1,5 +1,4 @@
 optimist       = require 'optimist'
-glob           = require 'glob'
 SheetGenerator = require './sheet_generator'
 
 argv = optimist.usage('Usage: spriteasm -o output-dir [-i file-glob]')
@@ -12,7 +11,7 @@ argv = optimist.usage('Usage: spriteasm -o output-dir [-i file-glob]')
                .argv
 
 sg = new SheetGenerator
-sg.generate glob.sync(argv.i), argv.o, (err) ->
+sg.generate argv._, argv.o, (err) ->
     if err?
         console.error err
         return

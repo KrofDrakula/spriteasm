@@ -27,7 +27,7 @@ tools you have at your disposal to transcode the final images.
 Usage
 -----
 
-    spriteasm -i "*.png" -o "output-dir"
+    spriteasm *.png -o output-dir
 
 The tool assumes all frames are of the same size and measures the size of the
 first frame matched by the glob pattern. The quotes around glob patterns are
