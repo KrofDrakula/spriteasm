@@ -30,9 +30,7 @@ Usage
     spriteasm *.png -o output-dir
 
 The tool assumes all frames are of the same size and measures the size of the
-first frame matched by the glob pattern. The quotes around glob patterns are
-mandatory due to the way I implemented option parsing. Maybe I'll fix it in
-future versions.
+first frame matched by the glob pattern.
 
 
 Performance
