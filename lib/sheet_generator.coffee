@@ -2,27 +2,32 @@ fs     = require 'fs'
 mkdirp = require 'mkdirp'
 Canvas = require 'canvas'
 Image  = Canvas.Image
+printf = require 'printf'
 
 class SheetGenerator
 
-    maxWidth  : 1024
-    maxHeight : 1024
+    defaults:
+        maxWidth  : 1024
+        maxHeight : 1024
 
     constructor: (options) ->
-        @options = options || {}
+        @options =
+            maxWidth  : options?.maxWidth or @defaults.maxWidth
+            maxHeight : options?.maxHeight or @defaults.maxHeight
 
     generate: (images, output, cb) ->
         @getImageMetadata images[0], (err, dimensions) =>
             cb err if err?
-            if dimensions.width > @maxWidth or dimensions.height > @maxHeight
+            if dimensions.width > @options.maxWidth or dimensions.height > @options.maxHeight
                 throw new Error 'Frame larger than 1024px limit!'
 
             unless fs.existsSync output
                 mkdirp.sync output
 
             n       = 0
-            columns = Math.floor @maxWidth / dimensions.width
-            rows    = Math.floor @maxHeight / dimensions.height
+            columns = Math.floor @options.maxWidth / dimensions.width
+            rows    = Math.floor @options.maxHeight / dimensions.height
+            digits  = getDigits images.length / (columns * rows)
 
             while images.length > 0
                 selected = images.slice 0, columns * rows
@@ -38,7 +43,9 @@ class SheetGenerator
                     y = Math.floor(i / columns) * dimensions.height
                     ctx.drawImage img, x, y, dimensions.width, dimensions.height
 
-                fs.writeFile "#{output}/spritesheet-#{n}.png", canvas.toBuffer()
+                seqNum = printf "%0#{digits}d", n
+
+                fs.writeFile "#{output}/spritesheet-#{seqNum}.png", canvas.toBuffer()
 
                 n++
 
@@ -51,6 +58,6 @@ class SheetGenerator
             img.src = data
             cb null, { width: img.width, height: img.height}
 
-
-
 module.exports = SheetGenerator
+
+getDigits = (n) -> Math.ceil Math.log(n) / Math.log(10)
