@@ -18,6 +18,8 @@ does ease the problem of generating sprite sheets out of individual frames into
 combined sprite sheets, split into 1024×1024 chunks (maximum allowed image size
 before downsampling occurs).
 
+The frames themselves are arranged left-to-right, top-to-bottom, in that order.
+
 This tool uses the node implementation of `canvas` to generate PNG sprite sheets.
 It also respects transparency of the original frames in the output.
 
