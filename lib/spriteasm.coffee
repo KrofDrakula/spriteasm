@@ -1,19 +1,41 @@
 optimist       = require 'optimist'
 SheetGenerator = require './sheet_generator'
 
-argv = optimist.usage('Usage: spriteasm -o output-dir [-i file-glob]')
-               .alias('i', 'input')
-               .describe('i', 'Input file glob pattern, usually *.png')
-               .default(i: '*.png')
+argv = optimist.usage('Usage: spriteasm <input-glob> -o <output-dir> [<options>]')
                .demand(['o'])
                .alias('o', 'output')
                .describe('o', "Output directory, will be created if it doesn't exist")
+
+               .alias('w', 'width')
+               .describe('w', 'Frame width in pixels (or "auto")')
+               .default(w: 'auto')
+
+               .alias('h', 'height')
+               .describe('h', 'Frame height in pixels (or "auto")')
+               .default(h: 'auto')
+
+               .describe('maxWidth', 'Maximum sprite sheet width in pixels')
+               .default(maxWidth: 'auto')
+
+               .describe('maxHeight', 'Maximum sprite sheet height in pixels')
+               .default(maxHeight: 'auto')
+
                .argv
 
-sg = new SheetGenerator
+opts = {
+    maxWidth  : if argv.maxWidth isnt 'auto' then parseInt(argv.maxWidth, 10) else null
+    maxHeight : if argv.maxHeight isnt 'auto' then parseInt(argv.maxHeight, 10) else null
+    width     : if argv.width isnt 'auto' then parseInt(argv.width, 10) else null
+    height    : if argv.height isnt 'auto' then parseInt(argv.height, 10) else null
+}
+
+sg = new SheetGenerator opts
+
+sg.on 'processStart', -> console.log 'Starting sprite sheet generation'
+sg.on 'sheetReady', (n, pct) -> console.log "Finished sheet ##{n}, #{pct}% complete"
+sg.on 'processEnd', -> console.log 'Sprite sheet generation finished, output in ' + argv.o
+
 sg.generate argv._, argv.o, (err) ->
     if err?
         console.error err
         return
-
-    console.log "Generated sprite sheets in #{argv.o}"
