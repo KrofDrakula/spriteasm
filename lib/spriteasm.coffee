@@ -1,4 +1,5 @@
 optimist       = require 'optimist'
+JsonPacker     = require './json_packer'
 SheetGenerator = require './sheet_generator'
 
 argv = optimist.usage('Usage: spriteasm <input-glob> -o <output-dir> [<options>]')
@@ -20,6 +21,10 @@ argv = optimist.usage('Usage: spriteasm <input-glob> -o <output-dir> [<options>]
                .describe('maxHeight', 'Maximum sprite sheet height in pixels')
                .default(maxHeight: 'auto')
 
+               .boolean('json')
+               .describe('json', 'Encode the images as data URIs in a JSON structure')
+               .default(json: false)
+
                .argv
 
 opts = {
@@ -29,13 +34,16 @@ opts = {
     height    : if argv.height isnt 'auto' then parseInt(argv.height, 10) else null
 }
 
-sg = new SheetGenerator opts
+if argv.json
+    generator = new JsonPacker
+else
+    generator = new SheetGenerator opts
 
-sg.on 'processStart', -> console.log 'Starting sprite sheet generation'
-sg.on 'sheetReady', (n, pct) -> console.log "Finished sheet ##{n}, #{pct}% complete"
-sg.on 'processEnd', -> console.log 'Sprite sheet generation finished, output in ' + argv.o
+generator.on 'processStart', -> console.log 'Starting sprite sheet generation'
+generator.on 'sheetReady', (name, pct) -> console.log "Finished sheet #{name}, #{pct}% complete"
+generator.on 'processEnd', -> console.log 'Sprite sheet generation finished, output in ' + argv.o
 
-sg.generate argv._, argv.o, (err) ->
+generator.generate argv._, argv.o, (err) ->
     if err?
         console.error err
         return

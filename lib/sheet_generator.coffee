@@ -1,30 +1,20 @@
-fs     = require 'fs'
-mkdirp = require 'mkdirp'
-Canvas = require 'canvas'
-Image  = Canvas.Image
-printf = require 'printf'
-EventEmitter = require('events').EventEmitter
+fs            = require 'fs'
+mkdirp        = require 'mkdirp'
+Canvas        = require 'canvas'
+Image         = Canvas.Image
+printf        = require 'printf'
+BaseGenerator = require './base_generator'
 
-class SheetGenerator extends EventEmitter
+class SheetGenerator extends BaseGenerator
 
     defaults:
         maxWidth  : 1024
         maxHeight : 1024
 
     constructor: (options) ->
-        @options =
-            maxWidth  : options?.maxWidth or @defaults.maxWidth
-            maxHeight : options?.maxHeight or @defaults.maxHeight
-            width     : options?.width or null
-            height    : options?.height or null
-
-    generate: (images, output, cb) ->
-        if @options.width is null or @options.height is null
-            @getImageMetadata images[0], (err, dimensions) =>
-                @assembleSheets images, dimensions, output, cb
-        else
-            @assembleSheets images, dimensions, output, cb
-            
+        super
+        @options.maxWidth  = options?.maxWidth or @defaults.maxWidth
+        @options.maxHeight = options?.maxHeight or @defaults.maxHeight
 
     assembleSheets: (images, dimensions, output, cb) ->
         @emit 'processStart'
@@ -66,13 +56,6 @@ class SheetGenerator extends EventEmitter
 
         @emit 'processEnd'
         cb null
-
-    getImageMetadata: (file, cb) ->
-        fs.readFile file, (err, data) ->
-            cb err if err?
-            img     = new Image
-            img.src = data
-            cb null, { width: img.width, height: img.height}
 
 module.exports = SheetGenerator
 

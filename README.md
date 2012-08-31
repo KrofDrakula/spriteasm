@@ -26,6 +26,10 @@ It also respects transparency of the original frames in the output.
 It does not convert or optimize the final sprite sheets, so use whatever favourite
 tools you have at your disposal to transcode the final images.
 
+Optionally, the script can generate a JSON object containing the file names mapped
+to a data URI for each of the encoded files by using the `--json` option when
+invoking the command.
+
 Usage
 -----
 
@@ -51,3 +55,9 @@ The results:
     real    0m56.409s
     user    0m55.996s
     sys     0m2.248s
+
+Generating a JSON data file of 316 sprites:
+
+    real    0m1.194s
+    user    0m0.788s
+    sys     0m0.520s
