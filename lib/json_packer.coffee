@@ -39,7 +39,7 @@ class JsonPacker extends BaseGenerator
                     if Object.keys(encoded).length is images.length
                         unless fs.existsSync path.dirname(output)
                             mkdirp.sync path.dirname(output)
-                        fs.writeFile output, JSON.stringify(encoded), (err) =>
+                        fs.writeFile output, JSON.stringify(encoded, null, 4), (err) =>
                             @emit 'processEnd'
                             cb if err? then err else null
                     @emit 'sheetReady', file, printf('%.2f', (done / images.length) * 100)
