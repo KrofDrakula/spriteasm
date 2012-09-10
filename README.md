@@ -30,6 +30,15 @@ Optionally, the script can generate a JSON object containing the file names mapp
 to a data URI for each of the encoded files by using the `--json` option when
 invoking the command.
 
+
+Sprite animation performance on WebKit
+--------------------------------------
+
+Before implementing web sprite sheet animations, you might consider reading [this
+article](http://gist.io/3639830). It covers mobile and desktop sprite animation performance which you should
+be aware of before planning use of such graphics.
+
+
 Usage
 -----
 
@@ -55,9 +64,3 @@ The results:
     real    0m56.409s
     user    0m55.996s
     sys     0m2.248s
-
-Generating a JSON data file of 316 sprites:
-
-    real    0m1.194s
-    user    0m0.788s
-    sys     0m0.520s
