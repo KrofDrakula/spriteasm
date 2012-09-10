@@ -19,7 +19,6 @@ class JsonPacker extends BaseGenerator
 
         for idx in [0...images.length]
             do =>
-                ctx.clearRect 0, 0, canvas.width, canvas.height
                 currentIndex = idx
                 file = images[currentIndex]
 
@@ -30,6 +29,7 @@ class JsonPacker extends BaseGenerator
                     img = new Image
                     img.src = "data:#{mime};base64," + data.toString('base64');
 
+                    ctx.clearRect 0, 0, canvas.width, canvas.height
                     ctx.drawImage img, 0, 0, dimensions.width, dimensions.height
 
                     encoded[path.basename(file)] = canvas.toDataURL()

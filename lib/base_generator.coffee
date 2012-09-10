@@ -1,5 +1,5 @@
 fs           = require 'fs'
-Image       = require('canvas').Image
+Image        = require('canvas').Image
 EventEmitter = require('events').EventEmitter
 
 class BaseGenerator extends EventEmitter
@@ -10,6 +10,7 @@ class BaseGenerator extends EventEmitter
             height : options?.height or null
 
     generate: (images, output, cb) ->
+        images.sort()
         if @options.width is null or @options.height is null
             @getImageMetadata images[0], (err, dimensions) =>
                 @assembleSheets images, dimensions, output, cb
