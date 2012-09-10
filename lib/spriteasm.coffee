@@ -35,7 +35,7 @@ opts = {
 }
 
 if argv.json
-    generator = new JsonPacker
+    generator = new JsonPacker opts
 else
     generator = new SheetGenerator opts
 

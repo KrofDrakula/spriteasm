@@ -1,8 +1,8 @@
 fs            = require 'fs'
 mkdirp        = require 'mkdirp'
+printf        = require 'printf'
 Canvas        = require 'canvas'
 Image         = Canvas.Image
-printf        = require 'printf'
 BaseGenerator = require './base_generator'
 
 class SheetGenerator extends BaseGenerator

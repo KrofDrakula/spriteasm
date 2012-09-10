@@ -14,7 +14,7 @@ class BaseGenerator extends EventEmitter
             @getImageMetadata images[0], (err, dimensions) =>
                 @assembleSheets images, dimensions, output, cb
         else
-            @assembleSheets images, dimensions, output, cb
+            @assembleSheets images, { width: @options.width, height: @options.height }, output, cb
 
     assembleSheets: (images, dimensions, output, cb) ->
         throw new Error 'Not implemented'

@@ -2,6 +2,8 @@ fs            = require 'fs'
 path          = require 'path'
 mkdirp        = require 'mkdirp'
 printf        = require 'printf'
+Canvas        = require 'canvas'
+Image         = Canvas.Image
 BaseGenerator = require './base_generator'
 
 class JsonPacker extends BaseGenerator
@@ -11,14 +13,29 @@ class JsonPacker extends BaseGenerator
 
         encoded = {}
         done = 0
+
+        canvas = new Canvas dimensions.width, dimensions.height
+        ctx = canvas.getContext '2d'
+
         for idx in [0...images.length]
             do =>
+                ctx.clearRect 0, 0, canvas.width, canvas.height
                 currentIndex = idx
                 file = images[currentIndex]
+
                 fs.readFile file, (err, data) =>
+
                     mime = @mapExtensionToMimeType path.extname file
-                    encoded[path.basename(file)] = "data:#{mime};base64," + data.toString('base64')
+
+                    img = new Image
+                    img.src = "data:#{mime};base64," + data.toString('base64');
+
+                    ctx.drawImage img, 0, 0, dimensions.width, dimensions.height
+
+                    encoded[path.basename(file)] = canvas.toDataURL()
+
                     done++
+
                     if Object.keys(encoded).length is images.length
                         unless fs.existsSync path.dirname(output)
                             mkdirp.sync path.dirname(output)
