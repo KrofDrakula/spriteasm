@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Spriteasm by KrofDrakula</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Spriteasm</h1>
+        <p>Animation sprite generator utility for web animations</p>
+
+        <p class="view"><a href="https://github.com/KrofDrakula/spriteasm">View the Project on GitHub <small>KrofDrakula/spriteasm</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/KrofDrakula/spriteasm/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/KrofDrakula/spriteasm/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/KrofDrakula/spriteasm">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Spriteasm</h1>
+
+<p>Animation sprite generation made easy.</p>
+
+<p>On mobile devices, animating anything beyong manipulating transforms and
+opacity is usually limited to using GIF animations and elaborate use of
+the canvas element. Both of these have their drawbacks – they're prohibitively
+expensive CPU-bound operations. HTML5 inline video is supported on some devices,
+but also suffers glitches, inconsistencies and rendering artifacts which break
+experiences. Also, video doesn't support alpha transparency and you'd be
+hard-pressed to create animated overlays.</p>
+
+<p>Enter sprite sheet animation.</p>
+
+<p>While this tool does not provide any JS implementations for said process, it
+does ease the problem of generating sprite sheets out of individual frames into
+combined sprite sheets, split into 1024×1024 chunks (maximum allowed image size
+before downsampling occurs).</p>
+
+<p>The frames themselves are arranged left-to-right, top-to-bottom, in that order.</p>
+
+<p>This tool uses the node implementation of <code>canvas</code> to generate PNG sprite sheets.
+It also respects transparency of the original frames in the output.</p>
+
+<p>It does not convert or optimize the final sprite sheets, so use whatever favourite
+tools you have at your disposal to transcode the final images.</p>
+
+<p>Optionally, the script can generate a JSON object containing the file names mapped
+to a data URI for each of the encoded files by using the <code>--json</code> option when
+invoking the command.</p>
+
+<h2>Sprite animation performance on WebKit</h2>
+
+<p>Before implementing web sprite sheet animations, you might consider reading <a href="http://gist.io/3639830">this
+article</a>. It covers mobile and desktop sprite animation
+performance which you should be aware of before planning use of such graphics.</p>
+
+<h2>Usage</h2>
+
+<pre><code>spriteasm *.png -o output-dir [options]
+</code></pre>
+
+<p>The tool assumes all frames are of the same size and measures the size of the
+first frame matched by the glob pattern.</p>
+
+<p>Run <code>spriteasm</code> without arguments to see the list of available options.</p>
+
+<h2>Performance</h2>
+
+<p>I've timed the performance on a sample set of 2,232 PNG frames (320×180), totalling
+154 MB. I ran the test on a VirtualBox instance of Ubuntu 32-bit on an
+EliteBook 8540p.</p>
+
+<p>The results:</p>
+
+<p>149 sprite sheets (960×900): 96 MB</p>
+
+<pre><code>real    0m56.409s
+user    0m55.996s
+sys     0m2.248s
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/KrofDrakula">KrofDrakula</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
